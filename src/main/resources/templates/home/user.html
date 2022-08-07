@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body style="background: #e9ecef;">
+<div th:insert="~{base :: navBar}"></div>
+<div class="row">
+    <nav class="col-md-1 d-none d-md-block sidebar" style="padding-right: 0px; background: #fff; min-height: 100vh;">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link h5"
+                       th:if="${CurrentUser != null} and ${CurrentUser.rolesToString().contains('ADMIN')}"
+                       href="/admin">Admin <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link h5 bg-primary" style="color: #f8f9fa;"
+                       th:if="${CurrentUser != null} and ${CurrentUser.rolesToString().contains('USER')}" href="/user">User</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="col-md-11 jumbotron py-0">
+        <h3>User information-page</h3>
+        <table class="table"  style="background: white">
+            <thead style="border-color: gray"><h4>About user</h4></thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            <tr>
+                <td th:text="${CurrentUser.getId()}">NULL</td>
+                <td th:text="${CurrentUser.getUsername()}">NULL</td>
+                <td th:text="${CurrentUser.getEmail()}">NULL</td>
+                <td th:text="${CurrentUser.rolesToString()}">NULL</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
