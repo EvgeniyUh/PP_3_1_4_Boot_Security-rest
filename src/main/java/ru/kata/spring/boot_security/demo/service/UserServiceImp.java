@@ -32,11 +32,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userDao.updateUser(user);
     }
 
+    @Transactional(readOnly=true)
     @Override
     public User getUser(Long id) {
         return userDao.getUser(id);
     }
 
+    @Transactional(readOnly=true)
     @Override
     public User getUserByName(String name) {
         return userDao.getUserByName(name);
@@ -47,25 +49,29 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userDao.remove(id);
     }
 
+    @Transactional(readOnly=true)
     @Override
     public List<User> listUsers() {
         return userDao.listUsers();
     }
 
+    @Transactional(readOnly=true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserByName(username);
+        User user = userDao.initUser(username);
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
         return user;
     }
 
+    @Transactional(readOnly=true)
     @Override
     public List<Role> getAllRoles() {
         return userDao.getAllRoles();
     }
 
+    @Transactional(readOnly=true)
     @Override
     public Role getRoleByName(String name) {
         return userDao.getRoleByName(name);

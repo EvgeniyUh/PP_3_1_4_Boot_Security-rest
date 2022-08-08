@@ -36,11 +36,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void updateUser(User user) {
-        User updatingUser = entityManager.find(User.class, user.getId());
-        updatingUser.setEmail(user.getEmail());
-        updatingUser.setUsername(user.getUsername());
-        updatingUser.setPassword(user.getPassword());
-        updatingUser.setRoles(user.getRoles());
+        entityManager.merge(user);
     }
 
     @Override
@@ -67,5 +63,12 @@ public class UserDaoImp implements UserDao {
         Role role = (Role) entityManager.createQuery("from Role where name = :name")
                 .setParameter("name", name).getSingleResult();
         return role;
+    }
+
+    @Override
+    public User initUser(String name) {
+        User user = (User) entityManager.createQuery("from User user JOIN FETCH user.roles where username = :name")
+                .setParameter("name", name).getSingleResult();
+        return user;
     }
 }

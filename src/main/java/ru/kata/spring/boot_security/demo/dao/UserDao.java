@@ -21,4 +21,6 @@ public interface UserDao {
     public List<Role> getAllRoles();
 
     public Role getRoleByName(String name);
+
+    public User initUser(String name);
 }
