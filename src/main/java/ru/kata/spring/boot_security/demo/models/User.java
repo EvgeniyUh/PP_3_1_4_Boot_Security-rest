@@ -15,8 +15,22 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    @Column(name = "age")
+    private String age;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -24,21 +38,23 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)//EAGER, cascade = CascadeType.MERGE)
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-//    @JoinTable(name = "roles", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "name"))
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String username, String email) {
-        this.username = username;
+    public User(String firstname, String email) {
+        this.firstname = firstname;
         this.email = email;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public List<Role> getRoles() {
@@ -71,12 +87,16 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
+    public String getUsername() {
+    return email;
+}
+
+    public String getFirstName() {
+        return firstname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLastName() {
+        return lastname;
     }
 
     public String rolesToString() {
@@ -111,12 +131,16 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastName(String lastname) {
+        this.lastname = lastname;
     }
 
     @Override
     public String toString() {
-        return String.format("Id %d Username %s", id, username);
+        return String.format("Id %d Firstname %s", id, firstname);
     }
 }

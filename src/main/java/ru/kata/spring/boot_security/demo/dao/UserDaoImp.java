@@ -28,9 +28,9 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User getUserByName(String name) {
-        User user = (User) entityManager.createQuery("from User where username = :name")
-                .setParameter("name", name).getSingleResult();
+    public User getUserByName(String email) {
+        User user = (User) entityManager.createQuery("from User where email = :email")
+                .setParameter("email", email).getSingleResult();
         return user;
     }
 
@@ -66,9 +66,9 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User initUser(String name) {
-        User user = (User) entityManager.createQuery("from User user JOIN FETCH user.roles where username = :name")
-                .setParameter("name", name).getSingleResult();
+    public User initUser(String email) {
+        User user = (User) entityManager.createQuery("from User user JOIN FETCH user.roles where email = :email")
+                .setParameter("email", email).getSingleResult();
         return user;
     }
 }

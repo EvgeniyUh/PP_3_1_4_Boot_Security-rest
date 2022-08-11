@@ -32,15 +32,19 @@
             <thead style="border-color: gray"><h4>About user</h4></thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Username</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Age</th>
                 <th scope="col">Email</th>
-                <th scope="col">Roles</th>
+                <th scope="col">Role</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             <tr>
                 <td th:text="${CurrentUser.getId()}">NULL</td>
-                <td th:text="${CurrentUser.getUsername()}">NULL</td>
+                <td th:text="${CurrentUser.getFirstName()}">NULL</td>
+                <td th:text="${CurrentUser.getLastName()}">NULL</td>
+                <td th:text="${CurrentUser.getAge()}">NULL</td>
                 <td th:text="${CurrentUser.getEmail()}">NULL</td>
                 <td th:text="${CurrentUser.rolesToString()}">NULL</td>
                 <td></td>

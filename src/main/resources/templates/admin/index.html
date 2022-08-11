@@ -45,7 +45,9 @@
                     <table class="table" style="background-color: #fff; border-color: gray;">
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Age</th>
                             <th scope="col">Email</th>
                             <th scope="col">Roles</th>
                             <th scope="col"></th>
@@ -53,7 +55,9 @@
                         </tr>
                         <tr th:each="user: ${users} " th:attr="id=${user.getId()}">
                             <td id="id" th:text="${user.getId()}">NULL</td>
-                            <td id="usernameTable" th:text="${user.getUsername()}">NULL</td>
+                            <td id="firstNameTable" th:text="${user.getFirstName()}">NULL</td>
+                            <td id="lastNameTable" th:text="${user.getLastName()}">NULL</td>
+                            <td id="ageTable" th:text="${user.getAge()}">NULL</td>
                             <td id="emailTable" th:text="${user.getEmail()}">NULL</td>
                             <td id="roleTable" th:text="${user.rolesToString()}">NULL</td>
                             <th>
@@ -80,10 +84,20 @@
                 <div class="align-middle py-2" style="background-color: #fff; border: grey;">
                     <form class="needs-validation" novalidate th:method="POST" th:action="@{/admin}">
                         <div class="mx-auto text-center" style="width: 40%;">
-                            <label for="usernameС">Username </label>
+                            <label for="firstnameС">First name </label>
                             <div class="input-group">
-                                <input req type="text" class="form-control" name="userName" id="usernameС"
-                                       placeholder="Username" required>
+                                <input req type="text" class="form-control" name="firstName" id="firstnameС"
+                                       placeholder="First name" required>
+                            </div>
+                            <label for="lastnameС">Last name </label>
+                            <div class="input-group">
+                                <input req type="text" class="form-control" name="lastName" id="lastnameС"
+                                       placeholder="Last name" required>
+                            </div>
+                            <label for="ageС">Age </label>
+                            <div class="input-group">
+                                <input req type="text" class="form-control" name="age" id="ageС"
+                                       placeholder="Age" required>
                             </div>
                             <label for="emailС">Email </label>
                             <div class="input-group">
@@ -124,7 +138,9 @@
 
         function prepareEditModal(selctedUserID) {
             $("#Edit #idEdit").val(selctedUserID);
-            $("#Edit #username").val($(`tr[id=${selctedUserID}] td[id=usernameTable]`).text());
+            $("#Edit #firstname").val($(`tr[id=${selctedUserID}] td[id=firstNameTable]`).text());
+            $("#Edit #lastname").val($(`tr[id=${selctedUserID}] td[id=lastNameTable]`).text());
+            $("#Edit #age").val($(`tr[id=${selctedUserID}] td[id=ageTable]`).text());
             $("#Edit #email").val($(`tr[id=${selctedUserID}] td[id=emailTable]`).text());
             $("#Edit form").attr("action", `/admin/${selctedUserID}/edit`).append();
         }
@@ -137,7 +153,9 @@
         function prepareDeleteModal(selctedUserID) {
             $("#Delete #userDeleteForm").attr("action", `/admin/${selctedUserID}/delete`).append();
             $("#Delete #idDelete").val(selctedUserID);
-            $("#Delete #usernameDelete").val($(`tr[id=${selctedUserID}] td[id=usernameTable]`).text());
+            $("#Delete #firstNameDelete").val($(`tr[id=${selctedUserID}] td[id=firstNameTable]`).text());
+            $("#Delete #lastNameDelete").val($(`tr[id=${selctedUserID}] td[id=lastNameTable]`).text());
+            $("#Delete #ageDelete").val($(`tr[id=${selctedUserID}] td[id=ageTable]`).text());
             $("#Delete #emailDelete").val($(`tr[id=${selctedUserID}] td[id=emailTable]`).text());
         }
 
@@ -158,11 +176,23 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="idEdit" placeholder="ID" readonly>
                         </div>
-                        <label for="username"><b>Username</b></label>
+
+                        <label for="firstname">First name </label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Username" required>
+                            <input req type="text" class="form-control" name="firstName" id="firstname"
+                                   placeholder="First name" required>
                         </div>
+                        <label for="lastname">Last name </label>
+                        <div class="input-group">
+                            <input req type="text" class="form-control" name="lastName" id="lastname"
+                                   placeholder="Last name" required>
+                        </div>
+                        <label for="age">Age </label>
+                        <div class="input-group">
+                            <input req type="text" class="form-control" name="age" id="age"
+                                   placeholder="Age" required>
+                        </div>
+
                         <label for="email"><b>Email</b></label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="email" name="email"
@@ -204,10 +234,20 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="idDelete" placeholder="ID" readonly>
                         </div>
-                        <label for="usernameDelete"><b>Username</b></label>
+                        <label for="firstNameDelete"><b>First name</b></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="usernameDelete"
-                                   placeholder="Username" readonly>
+                            <input type="text" class="form-control" id="firstNameDelete"
+                                   placeholder="First name" readonly>
+                        </div>
+                        <label for="lastNameDelete"><b>Last name</b></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="lastNameDelete"
+                                   placeholder="Last name" readonly>
+                        </div>
+                        <label for="ageDelete"><b>Age</b></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="ageDelete"
+                                   placeholder="Age" readonly>
                         </div>
                         <label for="emailDelete"><b>Email</b></label>
                         <div class="input-group">

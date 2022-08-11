@@ -25,14 +25,34 @@
         <form class="needs-validation" novalidate th:method="POST" th:action="@{/admin/{id}/edit(id=${user.getId()})}"
               th:object="${user}">
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="username">Username </label>
+                 <div class="col-md-6 mb-3">
+                    <label for="firstname">First name </label>
                     <div class="input-group">
-                        <input type="text" class="form-control" th:field="*{username}" id="username"
-                               placeholder="Username" required>
+                        <input type="text" class="form-control" th:field="*{firstName}" id="firstname"
+                               placeholder="First name" required>
                     </div>
                 </div>
-                <div class="col-md-6 mb-3">
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-3">
+                    <label for="lastname">Last name </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" th:field="*{lastName}" id="lastname"
+                               placeholder="Last name" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-3">
+                    <label for="age">Age </label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" th:field="*{age}" id="age"
+                               placeholder="Age" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6 mb-3">
                     <label for="email">Email </label>
                     <div class="input-group">
                         <input type="text" class="form-control" th:field="*{email}" id="email"
