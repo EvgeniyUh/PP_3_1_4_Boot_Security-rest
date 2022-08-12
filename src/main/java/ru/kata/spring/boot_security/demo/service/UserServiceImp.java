@@ -1,8 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import ru.kata.spring.boot_security.demo.dao.UserDao;
-import ru.kata.spring.boot_security.demo.models.Role;
-import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -63,17 +62,5 @@ public class UserServiceImp implements UserService, UserDetailsService {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
         return user;
-    }
-
-    @Transactional(readOnly=true)
-    @Override
-    public List<Role> getAllRoles() {
-        return userDao.getAllRoles();
-    }
-
-    @Transactional(readOnly=true)
-    @Override
-    public Role getRoleByName(String name) {
-        return userDao.getRoleByName(name);
     }
 }

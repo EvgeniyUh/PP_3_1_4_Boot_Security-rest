@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages={"ru.kata.spring.boot_security.demo"})
 @EnableJpaRepositories(basePackages="ru.kata.spring.boot_security.demo.dao")
 @EnableTransactionManagement
-@EntityScan(basePackages="ru.kata.spring.boot_security.demo.models")
+@EntityScan(basePackages="ru.kata.spring.boot_security.demo.model")
 @SpringBootApplication
 public class SpringBootSecurityDemoApplication {
 

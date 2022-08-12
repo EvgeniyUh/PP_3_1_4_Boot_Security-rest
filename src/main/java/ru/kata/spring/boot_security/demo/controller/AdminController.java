@@ -1,7 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import ru.kata.spring.boot_security.demo.models.Role;
-import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +19,17 @@ public class AdminController {
 
     private final UserService userService;
 
-    public AdminController(UserService userService) {
+    private final RoleService roleService;
+
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
     public String index(Model model) {
         model.addAttribute("users", userService.listUsers());
-        model.addAttribute("BDroles", userService.getAllRoles());
+        model.addAttribute("BDroles", roleService.getAllRoles());
         return "admin/index";
     }
 
@@ -39,7 +43,7 @@ public class AdminController {
         user.setPassword(password);
         user.setEmail(email);
         for (String name: roles) {
-            user.getRoles().add(userService.getRoleByName(name));
+            user.getRoles().add(roleService.getRoleByName(name));
         }
         userService.add(user);
         return "redirect:/admin";
@@ -48,7 +52,7 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("BDroles", userService.getAllRoles());
+        model.addAttribute("BDroles", roleService.getAllRoles());
         return "admin/edit";
     }
 
@@ -56,7 +60,7 @@ public class AdminController {
     public String update(@ModelAttribute("user") User user, @RequestParam("selectedRoles") String[] roles) {
         List<Role> newList = new ArrayList<>();
         for (String name: roles) {
-            newList.add(userService.getRoleByName(name));
+            newList.add(roleService.getRoleByName(name));
         }
         user.setRoles(newList);
         userService.updateUser(user);
