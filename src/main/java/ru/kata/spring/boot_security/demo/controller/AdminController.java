@@ -34,7 +34,8 @@ public class AdminController {
     }
 
     @PostMapping()
-    public String create(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("age") String age, @RequestParam("email") String email,
+    public String create(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                         @RequestParam("age") String age, @RequestParam("email") String email,
                          @RequestParam("password") String password, @RequestParam("selectedRoles") String[] roles) {
         User user = new User();
         user.setFirstName(firstName);

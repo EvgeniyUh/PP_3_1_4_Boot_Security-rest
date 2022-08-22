@@ -22,7 +22,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link h5"
-                       th:if="${CurrentUser != null} and ${CurrentUser.rolesToString().contains('USER')}"
+                       th:if="${CurrentUser != null} and (${CurrentUser.rolesToString().contains('USER')} or ${CurrentUser.rolesToString().contains('ADMIN')})"
                        href="/user">User</a>
                 </li>
             </ul>
@@ -32,17 +32,18 @@
         <h1>Admin panel</h1>
         <ul class="nav nav-tabs" style="border-color: gray">
             <li class="nav-item" style="border-color: gray">
-                <a class="nav-link active" data-toggle="tab" href="#list">Users table</a>
+                <a class="nav-link active" id="usersTableLink" data-toggle="tab" href="#usersTableTab">Users table</a>
             </li>
             <li class="nav-item" style="border-color: gray">
-                <a class="nav-link" data-toggle="tab" href="#newUser">New User</a>
+                <a class="nav-link" data-toggle="tab" id="newUserLink" href="#newUserTab">New User</a>
             </li>
         </ul>
-        <div class="tab-content" style="border-color: gray">
-            <div class="tab-pane fade show active" id="list" style="border-color: gray">
+        <div class="tab-content" style="border-color: gray; background-color: #fff">
+            <div class="tab-pane fade show active" id="usersTableTab" style="border-color: gray">
                 <h3 style="border-color: gray">All users:</h3>
                 <div class="container-fluid px-0 m-0" style="border-color: gray">
-                    <table class="table" style="background-color: #fff; border-color: gray;">
+                    <table class="table" style="border-color: gray;">
+                        <thead>
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">First Name</th>
@@ -53,64 +54,46 @@
                             <th scope="col"></th>
                             <th scope="col"></th>
                         </tr>
-                        <tr th:each="user: ${users} " th:attr="id=${user.getId()}">
-                            <td id="id" th:text="${user.getId()}">NULL</td>
-                            <td id="firstNameTable" th:text="${user.getFirstName()}">NULL</td>
-                            <td id="lastNameTable" th:text="${user.getLastName()}">NULL</td>
-                            <td id="ageTable" th:text="${user.getAge()}">NULL</td>
-                            <td id="emailTable" th:text="${user.getEmail()}">NULL</td>
-                            <td id="roleTable" th:text="${user.rolesToString()}">NULL</td>
-                            <th>
-                                <button th:attr="id=${user.getId()}" type="button" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#Edit">
-                                    Edit
-                                </button>
-                            </th>
-                            <th>
-                                <button th:attr="id=${user.getId()}" type="button" class="btn"
-                                        style="background-color: brown; border-color: brown; color: #fff;"
-                                        data-toggle="modal" data-target="#Delete">
-                                    Delete
-                                </button>
-                            </th>
-                        </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                        </tbody>
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="newUser">
+            <div class="tab-pane fade" id="newUserTab">
                 <div class="py-2">
                     <h3>Add new user</h3>
                 </div>
                 <div class="align-middle py-2" style="background-color: #fff; border: grey;">
-                    <form class="needs-validation" novalidate th:method="POST" th:action="@{/admin}">
+                    <form class="needs-validation" id="newUserForm" th:method="POST" th:action="@{/admin}">
                         <div class="mx-auto text-center" style="width: 40%;">
-                            <label for="firstnameС">First name </label>
+                            <label for="newFirstname">First name </label>
                             <div class="input-group">
-                                <input req type="text" class="form-control" name="firstName" id="firstnameС"
+                                <input type="text" class="form-control" name="firstName" id="newFirstname"
                                        placeholder="First name" required>
                             </div>
-                            <label for="lastnameС">Last name </label>
+                            <label for="newLastname">Last name </label>
                             <div class="input-group">
-                                <input req type="text" class="form-control" name="lastName" id="lastnameС"
+                                <input type="text" class="form-control" name="lastName" id="newLastname"
                                        placeholder="Last name" required>
                             </div>
-                            <label for="ageС">Age </label>
+                            <label for="newAge">Age </label>
                             <div class="input-group">
-                                <input req type="text" class="form-control" name="age" id="ageС"
+                                <input type="text" class="form-control" name="age" id="newAge"
                                        placeholder="Age" required>
                             </div>
-                            <label for="emailС">Email </label>
+                            <label for="newEmail">Email </label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="email" id="emailС"
+                                <input type="text" class="form-control" name="email" id="newEmail"
                                        placeholder="email@example.com" required>
                             </div>
-                            <label for="passwordС">Password </label>
+                            <label for="newPassword">Password </label>
                             <div class="input-group">
-                                <input type="password" class="form-control" name="password" id="passwordС"
+                                <input type="password" class="form-control" name="password" id="newPassword"
                                        placeholder="Password" required>
                             </div>
-                            <label for="roleС">Role </label>
-                            <select class="custom-select d-block w-100" size="2" id="roleС" name="selectedRoles"
+                            <label for="newSelectedRoles">Role </label>
+                            <select class="custom-select d-block w-100" size="2" id="newSelectedRoles" name="selectedRoles"
                                     multiple
                                     required>
                                 <option th:each="role : ${BDroles}" th:text="${role.getName()}"
@@ -120,7 +103,7 @@
                         <br>
                         <button class="btn"
                                 style="position: relative; left: 50%; transform: translate(-50%, 0); background-color: green; border-color: green; color: #fff; width: 30%;"
-                                type="submit"> Create
+                                type="button" onclick="createUser()"> Create
                         </button>
                     </form>
                 </div>
@@ -130,37 +113,6 @@
 </div>
 <div class="modal fade" id="Edit" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <script>
-        $('table .btn-primary').on('click', function () {
-            let selctedUserID = $(this).attr("id")
-            prepareEditModal(selctedUserID)
-        })
-
-        function prepareEditModal(selctedUserID) {
-            $("#Edit #idEdit").val(selctedUserID);
-            $("#Edit #firstname").val($(`tr[id=${selctedUserID}] td[id=firstNameTable]`).text());
-            $("#Edit #lastname").val($(`tr[id=${selctedUserID}] td[id=lastNameTable]`).text());
-            $("#Edit #age").val($(`tr[id=${selctedUserID}] td[id=ageTable]`).text());
-            $("#Edit #email").val($(`tr[id=${selctedUserID}] td[id=emailTable]`).text());
-            $("#Edit form").attr("action", `/admin/${selctedUserID}/edit`).append();
-        }
-
-        $('table .btn').on('click', function () {
-            let selctedUserID = $(this).attr("id")
-            prepareDeleteModal(selctedUserID)
-        })
-
-        function prepareDeleteModal(selctedUserID) {
-            $("#Delete #userDeleteForm").attr("action", `/admin/${selctedUserID}/delete`).append();
-            $("#Delete #idDelete").val(selctedUserID);
-            $("#Delete #firstNameDelete").val($(`tr[id=${selctedUserID}] td[id=firstNameTable]`).text());
-            $("#Delete #lastNameDelete").val($(`tr[id=${selctedUserID}] td[id=lastNameTable]`).text());
-            $("#Delete #ageDelete").val($(`tr[id=${selctedUserID}] td[id=ageTable]`).text());
-            $("#Delete #emailDelete").val($(`tr[id=${selctedUserID}] td[id=emailTable]`).text());
-        }
-
-
-    </script>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -176,23 +128,21 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="idEdit" placeholder="ID" readonly>
                         </div>
-
-                        <label for="firstname">First name </label>
+                        <label for="firstname"><b>First name</b></label>
                         <div class="input-group">
-                            <input req type="text" class="form-control" name="firstName" id="firstname"
+                            <input type="text" class="form-control" id="firstname" name="firstname"
                                    placeholder="First name" required>
                         </div>
-                        <label for="lastname">Last name </label>
+                        <label for="lastname"><b>Last name</b></label>
                         <div class="input-group">
-                            <input req type="text" class="form-control" name="lastName" id="lastname"
+                            <input type="text" class="form-control" id="lastname" name="lastname"
                                    placeholder="Last name" required>
                         </div>
-                        <label for="age">Age </label>
+                        <label for="age"><b>Age</b></label>
                         <div class="input-group">
-                            <input req type="text" class="form-control" name="age" id="age"
+                            <input type="text" class="form-control" id="age" name="age"
                                    placeholder="Age" required>
                         </div>
-
                         <label for="email"><b>Email</b></label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="email" name="email"
@@ -213,7 +163,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" form="userData" class="btn btn-primary">Edit</button>
+                <button type="button" form="userData" class="btn btn-primary" id="confirmEditUserBtn" data-dismiss="modal">Edit</button>
             </div>
         </div>
     </div>
@@ -234,14 +184,14 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="idDelete" placeholder="ID" readonly>
                         </div>
-                        <label for="firstNameDelete"><b>First name</b></label>
+                        <label for="firstnameDelete"><b>First name</b></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="firstNameDelete"
+                            <input type="text" class="form-control" id="firstnameDelete"
                                    placeholder="First name" readonly>
                         </div>
-                        <label for="lastNameDelete"><b>Last name</b></label>
+                        <label for="lastnameDelete"><b>Last name</b></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="lastNameDelete"
+                            <input type="text" class="form-control" id="lastnameDelete"
                                    placeholder="Last name" readonly>
                         </div>
                         <label for="ageDelete"><b>Age</b></label>
@@ -265,7 +215,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" form="userDeleteForm" class="btn btn-primary"
+                <button type="button" class="btn btn-primary" id="confirmDeleteUserBtn" data-dismiss="modal"
                         style="background-color: brown; border-color: brown; color: #fff;">Delete
                 </button>
             </div>
@@ -282,5 +232,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<!--script src="/js/AdminPanelScripts.js"></script-->
+<script src="/AdminPanelScripts.js"></script>
+
 </body>
 </html>
