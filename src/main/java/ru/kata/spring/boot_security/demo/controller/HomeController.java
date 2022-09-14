@@ -12,9 +12,13 @@ public class HomeController {
     private UserService userService;
 
     @Autowired
-    private void setUserService(UserService us) {
-        this.userService = us;
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
+
+//    private void setUserService(UserService us) {
+//        this.userService = us;
+//    }
 
     @RequestMapping("/")
     public String getIndex(){

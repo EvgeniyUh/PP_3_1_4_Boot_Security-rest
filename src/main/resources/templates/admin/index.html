@@ -97,7 +97,7 @@
                                     multiple
                                     required>
                                 <option th:each="role : ${BDroles}" th:text="${role.getName()}"
-                                        th:value="${role.getName()}"></option>
+                                        th:value="${role}" th:id="${role.getName()}"  th:data-dbid="${role.getId()}" ></option>
                             </select>
                         </div>
                         <br>

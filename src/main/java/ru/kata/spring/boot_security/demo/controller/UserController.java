@@ -3,25 +3,30 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 
-@RequestMapping
+@RequestMapping("/user")
 @Controller
 public class UserController {
 
     private UserService userService;
 
+//    private void setUserService(UserService us) {
+//        this.userService = us;
+//    }
     @Autowired
-    private void setUserService(UserService us) {
-        this.userService = us;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @RequestMapping("/user")
+    @GetMapping
     public String getProfile(Model model, Principal principal) {
         User user = userService.getUserByName(principal.getName());
         model.addAttribute("roles", user.getRoles());

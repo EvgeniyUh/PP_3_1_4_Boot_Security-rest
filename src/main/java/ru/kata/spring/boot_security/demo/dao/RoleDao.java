@@ -10,4 +10,6 @@ public interface RoleDao {
 
     public Role getRoleByName(String name);
 
+//    public void createIfNotExist(Role role);
+
 }

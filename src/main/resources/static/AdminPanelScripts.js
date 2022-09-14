@@ -31,7 +31,9 @@ async function deleteUser(userId) {
     });
 }
 
+
 async function createUser() {
+    let rolesAttr = bildRoles($('#newUserForm #newSelectedRoles').val());
     await fetch('/rest/create', {
         method: 'POST',
         headers: {
@@ -43,7 +45,7 @@ async function createUser() {
             "age": $('#newUserForm #newAge').val(),
             "email": $('#newUserForm #newEmail').val(),
             "password": $('#newUserForm #newPassword').val(),
-            'roles': $('#newUserForm #newSelectedRoles').val()
+            'roles': rolesAttr
         })
     });
     await drawUsersTable();
@@ -63,7 +65,31 @@ async function createUser() {
     $('#newUserForm #newSelectedRoles').val("")
 }
 
+function bildRoles(masRol) {
+    let rolesAttr = [];
+    let i = 0;
+    for (const element of masRol) {
+        if (element == "ADMIN") {
+            rolesAttr[i] = {
+                "id": parseInt(document.getElementById("ADMIN").dataset.dbid),
+                "name": element
+            }
+            i++;
+        }
+        if (element == "USER") {
+            rolesAttr[i] = {
+                "id": parseInt(document.getElementById("USER").dataset.dbid),
+                "name": element
+            }
+            i++;
+        }
+    }
+    return rolesAttr
+}
+
 async function editUser() {
+    let rolesAttr = bildRoles($('#Edit #role').val());
+
     await fetch('/rest/edit', {
         method: 'PUT',
         headers: {
@@ -76,7 +102,7 @@ async function editUser() {
             "age": $('#Edit #age').val(),
             "email": $('#Edit #email').val(),
             "password": $('#Edit #password').val(),
-            'roles': $('#Edit #role').val()
+            'roles': rolesAttr
         })
     });
     let user = await getUserData($("#Edit #idEdit").val())

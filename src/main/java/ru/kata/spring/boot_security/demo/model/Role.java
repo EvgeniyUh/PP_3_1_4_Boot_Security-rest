@@ -4,12 +4,15 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints=@UniqueConstraint(columnNames={"name"}))
 public class Role implements GrantedAuthority{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+
     @Column(name = "name", unique = true)
     private String name;
 
@@ -36,13 +39,13 @@ public class Role implements GrantedAuthority{
         this.id = id;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 
     public String getName() {
         return name;
