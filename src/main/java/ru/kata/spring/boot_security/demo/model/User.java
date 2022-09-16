@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -153,5 +154,21 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return String.format("Id %d Firstname %s", id, firstname);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(firstname, user.firstname);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstname, lastname);
     }
 }

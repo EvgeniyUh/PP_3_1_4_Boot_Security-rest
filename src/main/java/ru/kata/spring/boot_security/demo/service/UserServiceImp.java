@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,17 +18,22 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private final UserDao userDao;
 
-    public UserServiceImp(UserDao ud) {
+    private final PasswordEncoder bCryptPasswordEncoder;
+
+    public UserServiceImp(UserDao ud, PasswordEncoder bCryptPasswordEncoder) {
         this.userDao = ud;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public void add(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.add(user);
     }
 
     @Override
     public void updateUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.updateUser(user);
     }
 
